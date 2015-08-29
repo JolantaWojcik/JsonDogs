@@ -1,38 +1,44 @@
 package pl.jolantawojcik.jsondogs;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import static pl.jolantawojcik.jsondogs.ListViewAdapter.*;
 
 
 public class Single_item extends ActionBarActivity {
+
+    private TextView textView, description_text;
+    private ImageView imageView;
+    private String name, description, imageUrl;
+    ArrayList<Dogs> dogsList;
+    ListViewAdapter.LoadImage load;
+    ListViewAdapter lva;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_item);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_single_item, menu);
-        return true;
-    }
+        textView = (TextView) findViewById(R.id.textView);
+        description_text = (TextView) findViewById(R.id.description);
+        imageView = (ImageView) findViewById(R.id.imageView);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        Intent intent = getIntent();
+        name = intent.getStringExtra("name");
+        description = intent.getStringExtra("description");
+        imageUrl = intent.getStringExtra("image");
+        textView.setText(name);
+        description_text.setText(description);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        ListViewAdapter.LoadImage load = lva.new LoadImage(imageView);
+        load.execute(imageUrl);
     }
 }
