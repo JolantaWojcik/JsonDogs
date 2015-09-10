@@ -1,16 +1,12 @@
 package pl.jolantawojcik.jsondogs;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -27,48 +23,36 @@ import java.util.List;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
-public class ListViewAdapter extends BaseAdapter {
+public class ListViewAdapter extends ArrayAdapter<Dogs> {
 
-    ArrayList<Dogs> dogsList;
+    private ArrayList<Dogs> dogsList;
     Context context;
-    int resource; //Resource
-    private TextView dogType;
-    private ImageView dogImage;
-    LayoutInflater layoutInflater;
-    LinearLayout list_item_view;
-    View view;
+    private LayoutInflater layoutInflater;
+    int resource;
+    ViewHolder holder;
 
-    public ListViewAdapter(Context context, ArrayList<Dogs> dogsList) {
+    public ListViewAdapter(Context context, int resource, ArrayList<Dogs> objects) {
+        super(context, resource, objects);
         this.context = context;
-        this.dogsList = dogsList;
-    }
-
-    @Override
-    public int getCount() {
-        return 0;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
+        this.resource = resource;
+        dogsList = objects;
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        layoutInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-        view = layoutInflater.inflate(R.layout.list_view_adapter, parent);
-        list_item_view = (LinearLayout) view.findViewById(R.id.list_item_view);
-        dogsList.get(position);
-        dogImage = (ImageView) list_item_view.findViewById(R.id.imageView);
-        dogType = (TextView) list_item_view.findViewById(R.id.textView);
-        dogType.setText(dogsList.get(position).getName());
-        //dogImage.setImageResource(R.mipmap.logodogs);
-        new LoadImage(dogImage).execute(dogsList.get(position).getImage());
+     View  view = convertView;
+        if(view == null){
+            view = layoutInflater.inflate(resource, null);
+            holder = new ViewHolder();
+            holder.imageview = (ImageView) view.findViewById(R.id.imageView);
+            holder.tvName = (TextView) view.findViewById(R.id.textView);
+            view.setTag(holder);
+        }else{
+            holder = (ViewHolder) view.getTag();
+        }
+            holder.tvName.setText(dogsList.get(position).getName());
+            new LoadImage(holder.imageview).execute(dogsList.get(position).getImage());
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,37 +61,16 @@ public class ListViewAdapter extends BaseAdapter {
                 intent.putExtra("name", dogsList.get(position).getName());
                 intent.putExtra("image", dogsList.get(position).getImage());
                 intent.putExtra("description", dogsList.get(position).getDescription());
+                Log.d("desc1", dogsList.get(position).getDescription());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
         return view;
     }
 
-    public class LoadImage extends AsyncTask<String, Void, Bitmap>{
-        private ImageView photo;
-
-        public LoadImage(ImageView photo){
-            this.photo = photo;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            String urlToImage = params[0];
-            Bitmap bitmap = null;
-
-            try {
-                InputStream is = new java.net.URL(urlToImage).openStream();
-                bitmap = BitmapFactory.decodeStream(is);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-            photo.setImageBitmap(bitmap);
-        }
+    private static class ViewHolder {
+        public ImageView imageview;
+        public TextView tvName;
     }
 }

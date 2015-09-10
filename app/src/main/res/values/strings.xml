@@ -1,8 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JsonDogs</string>
+    <string name="app_name">Rasy psów</string>
 
-    <string name="dog_breed">Dog breed</string>
+    <string name="dog_breed">Rasy psów</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_single_item">Single_item</string>
-    <string name="title_activity_list_view_adapter">Dogs breeds</string>
+    <string name="title_activity_list_view_adapter">Rasy psów</string>
 </resources>

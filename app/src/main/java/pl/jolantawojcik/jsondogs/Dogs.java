@@ -1,8 +1,5 @@
 package pl.jolantawojcik.jsondogs;
 
-/**
- * Created by Jola on 29/08/2015.
- */
 public class Dogs {
 
     private String name;

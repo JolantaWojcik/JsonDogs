@@ -7,25 +7,12 @@
     android:orientation="vertical"
     tools:context="pl.jolantawojcik.jsondogs.Single_item">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
+    <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
-            android:layout_gravity="left"
-            android:src="@mipmap/logodogs" />
-
-        <TextView android:text="@string/dog_breed" android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:id="@+id/textView"
-            android:layout_marginRight="50dp" />
-
-    </LinearLayout>
+            android:src="@mipmap/logodogs"
+            android:layout_gravity="center" />
 
     <TextView
         android:layout_width="wrap_content"
